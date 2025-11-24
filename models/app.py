@@ -23,7 +23,7 @@ pipeline = load_pipeline()
 # MongoDB Connector
 # -------------------------------
 def get_mongo_collection():
-    uri = "mongodb+srv://2300080081:Mongodb150@cluster0.uxnkrpu.mongodb.net/?appName=Cluster0"
+    uri = "uri"
     if not uri:
         st.error("MongoDB URI not found. Set MONGO_URI environment variable.")
         return None
