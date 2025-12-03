@@ -1,13 +1,18 @@
 import os
 from pymongo import MongoClient
-from dotenv import load_dotenv
-
-load_dotenv()
+import streamlit as st
 
 class DatabaseConfig:
     def __init__(self):
-        self.mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
-        self.database_name = os.getenv("DATABASE_NAME", "transaction_categorization")
+        # Try Streamlit secrets first, then fall back to environment variables
+        try:
+            self.mongodb_uri = st.secrets.get("MONGODB_URI", os.getenv("MONGODB_URI", "mongodb://localhost:27017/"))
+            self.database_name = st.secrets.get("DATABASE_NAME", os.getenv("DATABASE_NAME", "transaction_categorization"))
+        except:
+            # Fallback to environment variables if secrets not available
+            self.mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+            self.database_name = os.getenv("DATABASE_NAME", "transaction_categorization")
+        
         self.client = None
         self.db = None
     

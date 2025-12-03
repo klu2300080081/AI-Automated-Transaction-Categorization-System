@@ -2,15 +2,19 @@ import os
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from dotenv import load_dotenv
-
-load_dotenv()
+import streamlit as st
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-secret-key-change-in-production")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-JWT_EXPIRATION_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
+# Try Streamlit secrets first, then fall back to environment variables
+try:
+    JWT_SECRET_KEY = st.secrets.get("JWT_SECRET_KEY", os.getenv("JWT_SECRET_KEY", "default-secret-key-change-in-production"))
+    JWT_ALGORITHM = st.secrets.get("JWT_ALGORITHM", os.getenv("JWT_ALGORITHM", "HS256"))
+    JWT_EXPIRATION_HOURS = int(st.secrets.get("JWT_EXPIRATION_HOURS", os.getenv("JWT_EXPIRATION_HOURS", "24")))
+except:
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-secret-key-change-in-production")
+    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+    JWT_EXPIRATION_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 
 class AuthUtils:
     
