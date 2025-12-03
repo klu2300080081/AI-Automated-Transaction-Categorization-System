@@ -6,8 +6,7 @@
     "codespaces": {
       "openFiles": [
         "README.md",
-        "app.py",
-        "full_pipeline.pkl"
+        "app.py"
       ]
     },
     "vscode": {
